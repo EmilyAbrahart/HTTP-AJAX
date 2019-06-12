@@ -8,21 +8,21 @@ export const FlexFunc = (direction, justifyC, alignI) => {
   `;
 };
 
-export const Button = (backgroundColor) => {
+export const Button = (backgroundColor, color) => {
   return `
   background-color: ${backgroundColor};
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  color: #bb1233;
+  color: ${color};
   cursor: pointer;
   font-weight: bold;
-  border: 2px solid #bb1233;
+  border: 2px solid ${color}};
   
 
   &:hover {
     color: ${backgroundColor};
-    background-color: #bb1233;
+    background-color: ${color};
     border: 2px solid ${backgroundColor};
   }
   `

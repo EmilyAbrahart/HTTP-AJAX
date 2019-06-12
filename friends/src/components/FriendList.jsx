@@ -2,28 +2,37 @@ import React from 'react';
 import axios from 'axios';
 import Friend from './Friend';
 import styled from 'styled-components';
-import {FlexFunc} from './ReusableStyles';
+import { FlexFunc, Button } from './ReusableStyles';
+import FriendForm from './FriendForm';
 
 const FriendListContainer = styled.div`
-${FlexFunc('column', 'space-between', 'center')};
-height: 100%;
-width: 100%;
-`
+	${FlexFunc('column', 'space-between', 'center')};
+	height: 100%;
+	width: 100%;
+`;
 
 const FriendListDiv = styled.div`
-${FlexFunc('row', 'space-evenly', 'center')};
-flex-wrap: wrap;
-`
+	${FlexFunc('row', 'space-evenly', 'center')};
+	flex-wrap: wrap;
+`;
 
 const PageHeader = styled.h1`
-color: white;
-`
+	color: white;
+`;
+const AddFriendButton = styled.button`
+	${Button('white', '#bb1233')}
+`;
+
+const FormContainerDiv = styled.div`
+	width: 100%;
+`;
 
 export default class FriendList extends React.Component {
 	state = {
-		friends: null,
+		friends: [],
 		errorMessage: '',
-		spinner: false
+		spinner: false,
+		length: 0
 	};
 
 	getFriends = () => {
@@ -43,7 +52,9 @@ export default class FriendList extends React.Component {
 					errorMessage: err.message
 				})
 			)
-			.finally(() => this.setState({ spinner: false }));
+			.finally(() =>
+				this.setState({ spinner: false, length: this.state.friends.length })
+			);
 	};
 
 	componentDidMount() {
@@ -51,20 +62,24 @@ export default class FriendList extends React.Component {
 	}
 
 	render() {
-    console.log(this.state.friends)
 		return (
-      
 			<FriendListContainer>
-        <PageHeader>Friends List</PageHeader>
-        {this.state.errorMessage && <div>{this.state.errorMessage}</div>}
-        {this.state.spinner && <div className="loading">Loading friends...</div>}
-				{this.state.friends && 
+				<PageHeader>Friends List</PageHeader>
+				<AddFriendButton>Add Friend</AddFriendButton>
+				<FormContainerDiv>
+					<FriendForm length={this.state.length}/>
+				</FormContainerDiv>
+				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
+				{this.state.spinner && (
+					<div className="loading">Loading friends...</div>
+				)}
+				{this.state.friends && (
 					<FriendListDiv>
 						{this.state.friends.map(friend => (
-					<Friend key={friend.id} {...friend}/>
+							<Friend key={friend.id} {...friend} />
 						))}
 					</FriendListDiv>
-				}
+				)}
 			</FriendListContainer>
 		);
 	}

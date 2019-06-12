@@ -52,11 +52,11 @@ const ButtonContainer = styled.div`
 `;
 
 const UpdateButton = styled.button`
-	${Button('white')}
+	${Button('white','#bb1233')}
 `;
 
 const RemoveButton = styled.button`
-	${Button('white')}
+	${Button('white', '#bb1233')}
 `;
 
 const CloseMenuButton = styled.div`
@@ -69,7 +69,7 @@ const CloseMenuButton = styled.div`
 	cursor: pointer;
 `;
 
-export default class FriendList extends React.Component {
+export default class Friend extends React.Component {
 	state = {
 		menuOpen: false
 	};
