@@ -80,6 +80,23 @@ export default class FriendList extends React.Component {
 			.catch(err => console.log(err));
 	};
 
+	addNewFriend = (propName, propAge, propEmail) => {
+		const friendObject = {
+			name: propName,
+			age: propAge,
+			email: propEmail
+    };
+    
+		axios
+			.post('http://localhost:5000/friends', friendObject)
+			.then(res =>
+				this.setState({
+					friends: res.data
+				})
+			)
+			.catch(err => console.log(err));
+	};
+
 	render() {
 		return (
 			<FriendListContainer>
@@ -91,6 +108,7 @@ export default class FriendList extends React.Component {
 					<FriendForm
 						isEditing={this.state.isEditing}
 						length={this.state.length}
+						addNewFriend={this.addNewFriend}
 					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}

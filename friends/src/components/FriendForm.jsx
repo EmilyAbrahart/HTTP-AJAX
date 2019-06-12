@@ -68,17 +68,12 @@ export default class FriendForm extends React.Component {
   
 
 	postNewFriend = () => {
-		axios
-			.post('http://localhost:5000/friends', {
-				name: this.state.friendName,
-				age: this.state.friendAge,
-				email: this.state.friendEmail
-			})
-			.then(res => console.log(res))
-			.catch(err => console.log(err));
+	this.props.addNewFriend(this.state.friendName, this.state.friendAge, this.state.friendEmail)
   };
   
-
+  deleteFriend = () => {
+    this.props.deleteFriend(this.props.id)
+  }
 
 	render() {
 		return (
