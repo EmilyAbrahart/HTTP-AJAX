@@ -18,6 +18,7 @@ export const Button = (backgroundColor, color) => {
   cursor: pointer;
   font-weight: bold;
   border: 2px solid ${color}};
+  outline: none;
   
 
   &:hover {

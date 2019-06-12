@@ -32,7 +32,8 @@ export default class FriendList extends React.Component {
 		friends: [],
 		errorMessage: '',
 		spinner: false,
-		length: 0
+		length: 0,
+		isEditing: false
 	};
 
 	getFriends = () => {
@@ -61,13 +62,28 @@ export default class FriendList extends React.Component {
 		this.getFriends();
 	}
 
+	toggleForm = () => {
+		this.setState({
+			isEditing: !this.state.isEditing
+		});
+	};
+
+	buttonText = () => {
+		return this.state.isEditing ? 'Close Form' : 'Add Friend';
+	};
+
 	render() {
 		return (
 			<FriendListContainer>
 				<PageHeader>Friends List</PageHeader>
-				<AddFriendButton>Add Friend</AddFriendButton>
+				<AddFriendButton onClick={this.toggleForm}>
+					{this.buttonText()}
+				</AddFriendButton>
 				<FormContainerDiv>
-					<FriendForm length={this.state.length}/>
+					<FriendForm
+						isEditing={this.state.isEditing}
+						length={this.state.length}
+					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
 				{this.state.spinner && (

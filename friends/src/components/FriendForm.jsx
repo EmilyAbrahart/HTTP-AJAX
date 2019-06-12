@@ -8,7 +8,8 @@ const FriendFormElement = styled.form`
 	${FlexFunc('column', 'center', 'center')};
 	background: #bb1233;
 	padding: 2rem;
-	box-sizing: border-box;
+  box-sizing: border-box;
+  display: ${props => props.isEditing ? 'flex' : 'none'};
 `;
 const FriendFormItemContainer = styled.div`
 	${FlexFunc('row', 'center', 'center')}
@@ -29,7 +30,8 @@ const AgeInputElement = styled(InputElement)`
 
 const FormButton = styled.button`
 	${Button('white', '#bb1233')}
-	margin-top: 0.5rem;
+  margin-top: 0.5rem;
+  outline: none;
 `;
 
 const FormItem = styled.div`
@@ -42,8 +44,9 @@ export default class FriendForm extends React.Component {
 		friendName: '',
 		friendAge: '',
     friendEmail: '',
-    friendId: this.props.length + 1,
-	};
+    
+  };
+  
 
 	nameChangeHandler = event => {
 		this.setState({
@@ -61,12 +64,12 @@ export default class FriendForm extends React.Component {
 		this.setState({
 			friendEmail: event.target.value
 		});
-	};
+  };
+  
 
 	postNewFriend = () => {
 		axios
 			.post('http://localhost:5000/friends', {
-        id: this.state.friendId,
 				name: this.state.friendName,
 				age: this.state.friendAge,
 				email: this.state.friendEmail
@@ -77,7 +80,7 @@ export default class FriendForm extends React.Component {
 
 	render() {
 		return (
-			<FriendFormElement>
+			<FriendFormElement isEditing={this.props.isEditing} onSubmit={this.postNewFriend}>
 				<FriendFormItemContainer>
 					<FormItem>
 						Name: <br />
@@ -105,8 +108,11 @@ export default class FriendForm extends React.Component {
 					</FormItem>
 				</FriendFormItemContainer>
 				<div>
-					<FormButton onSubmit={this.postNewFriend}>
+					<FormButton type='submit'>
 						Submit
+					</FormButton>
+          <FormButton type='reset'>
+						Cancel
 					</FormButton>
 				</div>
 			</FriendFormElement>
