@@ -76,7 +76,9 @@ export default class FriendForm extends React.Component {
 			})
 			.then(res => console.log(res))
 			.catch(err => console.log(err));
-	};
+  };
+  
+
 
 	render() {
 		return (

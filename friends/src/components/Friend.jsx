@@ -84,7 +84,11 @@ export default class Friend extends React.Component {
 		this.setState({
 			menuOpen: false
 		});
-	};
+  };
+  
+  deleteFriend = () => {
+    this.props.deleteFriend(this.props.id)
+  }
 
 	render() {
 		return (
@@ -100,7 +104,7 @@ export default class Friend extends React.Component {
 				<ButtonContainer isMenuOpen={this.state.menuOpen}>
 					<CloseMenuButton onClick={this.closeMenu}>x</CloseMenuButton>
 					<UpdateButton>Update</UpdateButton>
-					<RemoveButton>Remove</RemoveButton>
+					<RemoveButton onClick={this.deleteFriend}>Remove</RemoveButton>
 				</ButtonContainer>
 			</FriendDiv>
 		);
