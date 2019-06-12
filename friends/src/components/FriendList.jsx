@@ -1,7 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 import Friend from './Friend';
+import styled from 'styled-components';
+import {FlexFunc} from './ReusableStyles';
 
+const FriendListContainer = styled.div`
+${FlexFunc('column', 'space-between', 'center')};
+height: 100%;
+width: 100%;
+`
+
+const PageHeader = styled.h1`
+color: white;
+`
 
 export default class FriendList extends React.Component {
 	state = {
@@ -38,8 +49,8 @@ export default class FriendList extends React.Component {
     console.log(this.state.friends)
 		return (
       
-			<div>
-        <h1>Friends List</h1>
+			<FriendListContainer>
+        <PageHeader>Friends List</PageHeader>
         {this.state.errorMessage && <div>{this.state.errorMessage}</div>}
         {this.state.spinner && <div className="loading">Loading friends...</div>}
 				{this.state.friends && 
@@ -49,7 +60,7 @@ export default class FriendList extends React.Component {
 						))}
 					</div>
 				}
-			</div>
+			</FriendListContainer>
 		);
 	}
 }

@@ -1,12 +1,18 @@
 import React from 'react';
-import './App.css';
 import FriendList from './components/FriendList';
+import styled from 'styled-components';
+import {FlexFunc} from './components/ReusableStyles';
+
+const AppDiv = styled.div`
+${FlexFunc('column', 'center', 'center')}
+
+`
 
 function App() {
   return (
-    <div className="App">
+    <AppDiv>
       <FriendList />
-    </div>
+    </AppDiv>
   );
 }
 
