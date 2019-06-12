@@ -32,7 +32,6 @@ export default class FriendList extends React.Component {
 		friends: [],
 		errorMessage: '',
 		spinner: false,
-		length: 0,
 		isEditing: false
 	};
 
@@ -53,9 +52,7 @@ export default class FriendList extends React.Component {
 					errorMessage: err.message
 				})
 			)
-			.finally(() =>
-				this.setState({ spinner: false, length: this.state.friends.length })
-			);
+			.finally(() => this.setState({ spinner: false }));
 	};
 
 	componentDidMount() {
@@ -70,13 +67,18 @@ export default class FriendList extends React.Component {
 
 	buttonText = () => {
 		return this.state.isEditing ? 'Close Form' : 'Add Friend';
-  };
-  
-  deleteFriend = (props) => {
-    axios.delete(`http://localhost:5000/friends/${props}`)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-  };
+	};
+
+	deleteFriend = props => {
+		axios
+			.delete(`http://localhost:5000/friends/${props}`)
+			.then(res =>
+				this.setState({
+					friends: res.data
+				})
+			)
+			.catch(err => console.log(err));
+	};
 
 	render() {
 		return (
@@ -88,8 +90,7 @@ export default class FriendList extends React.Component {
 				<FormContainerDiv>
 					<FriendForm
 						isEditing={this.state.isEditing}
-            length={this.state.length}
-            
+						length={this.state.length}
 					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
@@ -99,7 +100,11 @@ export default class FriendList extends React.Component {
 				{this.state.friends && (
 					<FriendListDiv>
 						{this.state.friends.map(friend => (
-							<Friend key={friend.id} {...friend} deleteFriend={this.deleteFriend}/>
+							<Friend
+								key={friend.id}
+								{...friend}
+								deleteFriend={this.deleteFriend}
+							/>
 						))}
 					</FriendListDiv>
 				)}

@@ -7,7 +7,7 @@ const FriendDiv = styled.div`
 	margin: 1rem;
 	padding: 1.5rem 3rem 0 3rem;
 	border-radius: 1rem;
-	${FlexFunc('column', 'space-between', 'center')}
+	${FlexFunc('column', 'space-between', 'center')};
 	line-height: 1.5rem;
 	position: relative;
 	border: ${props => (props.isMenuOpen ? '2px solid white' : 'none')};
