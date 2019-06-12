@@ -5,14 +5,15 @@ import { FlexFunc, Button } from './ReusableStyles';
 const FriendDiv = styled.div`
 	background-color: white;
 	margin: 1rem;
-	padding: 1.5rem 3rem 0 3rem;
+	padding: 1.5rem 4rem 0 4rem;
 	border-radius: 1rem;
 	${FlexFunc('column', 'space-between', 'center')};
 	line-height: 1.5rem;
 	position: relative;
 	border: ${props => (props.isMenuOpen ? '2px solid white' : 'none')};
-	height: 200px;
-	width: 300px;
+	height: 230px;
+  width: 350px;
+  box-sizing: border-box;
 `;
 
 const FriendInfo = styled.div`

@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FlexFunc, Button } from './ReusableStyles';
-import axios from 'axios';
 
 const FriendFormElement = styled.form`
 	width: 100%;
 	${FlexFunc('column', 'center', 'center')};
 	background: #bb1233;
 	padding: 2rem;
-  box-sizing: border-box;
-  display: ${props => props.isEditing ? 'flex' : 'none'};
+	box-sizing: border-box;
+	display: ${props => (props.isEditing ? 'flex' : 'none')};
 `;
 const FriendFormItemContainer = styled.div`
 	${FlexFunc('row', 'center', 'center')}
@@ -30,8 +29,8 @@ const AgeInputElement = styled(InputElement)`
 
 const FormButton = styled.button`
 	${Button('white', '#bb1233')}
-  margin-top: 0.5rem;
-  outline: none;
+	margin-top: 0.5rem;
+	outline: none;
 `;
 
 const FormItem = styled.div`
@@ -43,10 +42,8 @@ export default class FriendForm extends React.Component {
 	state = {
 		friendName: '',
 		friendAge: '',
-    friendEmail: '',
-    
-  };
-  
+		friendEmail: ''
+	};
 
 	nameChangeHandler = event => {
 		this.setState({
@@ -64,20 +61,37 @@ export default class FriendForm extends React.Component {
 		this.setState({
 			friendEmail: event.target.value
 		});
-  };
-  
+	};
 
-	postNewFriend = () => {
-	this.props.addNewFriend(this.state.friendName, this.state.friendAge, this.state.friendEmail)
-  };
-  
-  deleteFriend = () => {
-    this.props.deleteFriend(this.props.id)
-  }
+	clearForm = () => {
+		this.setState({
+			friendName: '',
+			friendAge: '',
+			friendEmail: ''
+		});
+	};
+
+	postNewFriend = event => {
+		event.preventDefault();
+		this.props.addNewFriend(
+			this.state.friendName,
+			this.state.friendAge,
+			this.state.friendEmail
+		);
+		this.clearForm();
+	};
+
+	deleteFriend = () => {
+		this.props.deleteFriend(this.props.id);
+	};
 
 	render() {
 		return (
-			<FriendFormElement isEditing={this.props.isEditing} onSubmit={this.postNewFriend}>
+			<FriendFormElement
+				isEditing={this.props.isEditing}
+				onSubmit={this.postNewFriend}
+				onReset={this.clearForm}
+			>
 				<FriendFormItemContainer>
 					<FormItem>
 						Name: <br />
@@ -105,12 +119,8 @@ export default class FriendForm extends React.Component {
 					</FormItem>
 				</FriendFormItemContainer>
 				<div>
-					<FormButton type='submit'>
-						Submit
-					</FormButton>
-          <FormButton type='reset'>
-						Cancel
-					</FormButton>
+					<FormButton type="submit">Submit</FormButton>
+					<FormButton type="reset">Clear</FormButton>
 				</div>
 			</FriendFormElement>
 		);
