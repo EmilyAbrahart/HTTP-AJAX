@@ -14,12 +14,16 @@ export const Button = (backgroundColor) => {
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  color: white;
+  color: #bb1233;
   cursor: pointer;
   font-weight: bold;
+  border: 2px solid #bb1233;
+  
 
   &:hover {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: ${backgroundColor};
+    background-color: #bb1233;
+    border: 2px solid ${backgroundColor};
   }
   `
 };

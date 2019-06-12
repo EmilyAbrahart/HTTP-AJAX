@@ -10,6 +10,11 @@ height: 100%;
 width: 100%;
 `
 
+const FriendListDiv = styled.div`
+${FlexFunc('row', 'space-evenly', 'center')};
+flex-wrap: wrap;
+`
+
 const PageHeader = styled.h1`
 color: white;
 `
@@ -54,11 +59,11 @@ export default class FriendList extends React.Component {
         {this.state.errorMessage && <div>{this.state.errorMessage}</div>}
         {this.state.spinner && <div className="loading">Loading friends...</div>}
 				{this.state.friends && 
-					<div className="friendList">
+					<FriendListDiv>
 						{this.state.friends.map(friend => (
 					<Friend key={friend.id} {...friend}/>
 						))}
-					</div>
+					</FriendListDiv>
 				}
 			</FriendListContainer>
 		);
