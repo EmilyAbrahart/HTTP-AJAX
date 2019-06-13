@@ -104,7 +104,7 @@ export default class FriendForm extends React.Component {
 					<FormItem>
 						Age: <br />
 						<AgeInputElement
-							type="text"
+							type="number"
 							onChange={this.ageChangeHandler}
 							value={this.state.friendAge}
 						/>
@@ -112,7 +112,7 @@ export default class FriendForm extends React.Component {
 					<FormItem>
 						Email: <br />
 						<InputElement
-							type="text"
+							type="email"
 							onChange={this.emailChangeHandler}
 							value={this.state.friendEmail}
 						/>

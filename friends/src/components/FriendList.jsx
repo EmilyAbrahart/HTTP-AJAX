@@ -32,7 +32,8 @@ export default class FriendList extends React.Component {
 		friends: [],
 		errorMessage: '',
 		spinner: false,
-		isEditing: false
+		isEditing: false,
+		isUpdating: false,
 	};
 
 	getFriends = () => {
