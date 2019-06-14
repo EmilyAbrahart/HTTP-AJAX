@@ -128,7 +128,8 @@ export default class FriendList extends React.Component {
 			.put(`http://localhost:5000/friends/${propID}`, updatedFriendObject)
 			.then(res =>
 				this.setState({
-					friends: res.data
+					friends: res.data,
+					isUpdating: false
 				})
 			)
 			.catch(err => console.log(err));
