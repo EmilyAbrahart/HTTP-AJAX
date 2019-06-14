@@ -47,7 +47,7 @@ export default class FriendForm extends React.Component {
 
 	componentDidUpdate() {
 		if (
-			this.state.isUpdating &&
+			this.props.isUpdating &&
 			(this.state.friendName !== this.props.name ||
 				this.state.friendAge !== this.props.age ||
 				this.state.friendEmail !== this.props.email)
