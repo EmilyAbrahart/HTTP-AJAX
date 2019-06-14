@@ -40,10 +40,25 @@ const FormItem = styled.div`
 
 export default class FriendForm extends React.Component {
 	state = {
-		friendName: '',
-		friendAge: '',
-		friendEmail: ''
+		friendName: this.props.name,
+		friendAge: this.props.age,
+		friendEmail: this.props.email
 	};
+
+	componentDidUpdate() {
+		if (
+			this.state.isUpdating &&
+			(this.state.friendName !== this.props.name ||
+				this.state.friendAge !== this.props.age ||
+				this.state.friendEmail !== this.props.email)
+		) {
+			this.setState({
+				friendName: this.props.name,
+				friendAge: this.props.age,
+				friendEmail: this.props.email
+			});
+		}
+	}
 
 	nameChangeHandler = event => {
 		this.setState({

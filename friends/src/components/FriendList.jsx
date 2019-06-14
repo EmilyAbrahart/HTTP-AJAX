@@ -35,7 +35,10 @@ export default class FriendList extends React.Component {
 		isEditing: false,
 		isUpdating: false,
 		friendIdToUpdate: '',
-		friendToUpdate: {}
+		friendToUpdate: {},
+		name: '',
+		age: '',
+		email: ''
 	};
 
 	getFriends = () => {
@@ -114,7 +117,9 @@ export default class FriendList extends React.Component {
 			isEditing: false,
 			isUpdating: true,
 			friendIdToUpdate: propID,
-			friendToUpdate: this.state.friends.find(friend => friend.id === propID)
+			name: this.state.friends.find(friend => friend.id === propID).name,
+			age: this.state.friends.find(friend => friend.id === propID).age,
+			email: this.state.friends.find(friend => friend.id === propID).email
 		});
 	};
 
@@ -122,7 +127,7 @@ export default class FriendList extends React.Component {
 		const updatedFriendObject = {
 			name: propName,
 			age: propAge,
-			email: propEmail,
+			email: propEmail
 		};
 		axios
 			.put(`http://localhost:5000/friends/${propID}`, updatedFriendObject)
@@ -149,7 +154,9 @@ export default class FriendList extends React.Component {
 						addNewFriend={this.addNewFriend}
 						isUpdating={this.state.isUpdating}
 						putFriend={this.putFriend}
-						{...this.state.friendToUpdate}
+						name={this.state.name}
+						age={this.state.age}
+						email={this.state.email}
 					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
