@@ -35,10 +35,10 @@ export default class FriendList extends React.Component {
 		isEditing: false,
 		isUpdating: false,
 		friendIdToUpdate: '',
-		friendToUpdate: {},
 		name: '',
 		age: '',
-		email: ''
+		email: '',
+		shouldUpdate: false
 	};
 
 	getFriends = () => {
@@ -68,8 +68,12 @@ export default class FriendList extends React.Component {
 	toggleForm = () => {
 		if (this.state.isEditing || this.state.isUpdating) {
 			this.setState({
+				name: '',
+				age: '',
+				email: '',
 				isEditing: false,
-				isUpdating: false
+				isUpdating: false,
+				shouldUpdate: true
 			});
 		} else {
 			this.setState({
@@ -119,7 +123,8 @@ export default class FriendList extends React.Component {
 			friendIdToUpdate: propID,
 			name: this.state.friends.find(friend => friend.id === propID).name,
 			age: this.state.friends.find(friend => friend.id === propID).age,
-			email: this.state.friends.find(friend => friend.id === propID).email
+			email: this.state.friends.find(friend => friend.id === propID).email,
+			shouldUpdate: true
 		});
 	};
 
@@ -140,6 +145,12 @@ export default class FriendList extends React.Component {
 			.catch(err => console.log(err));
 	};
 
+	componentUpdated = () => {
+		this.setState({
+			shouldUpdate: false
+		});
+	};
+
 	render() {
 		return (
 			<FriendListContainer>
@@ -149,6 +160,8 @@ export default class FriendList extends React.Component {
 				</AddFriendButton>
 				<FormContainerDiv>
 					<FriendForm
+						componentUpdated={this.componentUpdated}
+						shouldUpdate={this.state.shouldUpdate}
 						isEditing={this.state.isEditing}
 						length={this.state.length}
 						addNewFriend={this.addNewFriend}
@@ -157,6 +170,7 @@ export default class FriendList extends React.Component {
 						name={this.state.name}
 						age={this.state.age}
 						email={this.state.email}
+						id={this.state.friendIdToUpdate}
 					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
