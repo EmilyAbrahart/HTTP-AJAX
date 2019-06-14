@@ -34,6 +34,8 @@ export default class FriendList extends React.Component {
 		spinner: false,
 		isEditing: false,
 		isUpdating: false,
+		friendIdToUpdate: '',
+		friendToUpdate: {}
 	};
 
 	getFriends = () => {
@@ -61,13 +63,22 @@ export default class FriendList extends React.Component {
 	}
 
 	toggleForm = () => {
-		this.setState({
-			isEditing: !this.state.isEditing
-		});
+		if (this.state.isEditing || this.state.isUpdating) {
+			this.setState({
+				isEditing: false,
+				isUpdating: false
+			});
+		} else {
+			this.setState({
+				isEditing: true
+			});
+		}
 	};
 
 	buttonText = () => {
-		return this.state.isEditing ? 'Close Form' : 'Add Friend';
+		return this.state.isEditing || this.state.isUpdating
+			? 'Close Form'
+			: 'Add Friend';
 	};
 
 	deleteFriend = props => {
@@ -86,10 +97,35 @@ export default class FriendList extends React.Component {
 			name: propName,
 			age: propAge,
 			email: propEmail
-    };
-    
+		};
+
 		axios
 			.post('http://localhost:5000/friends', friendObject)
+			.then(res =>
+				this.setState({
+					friends: res.data
+				})
+			)
+			.catch(err => console.log(err));
+	};
+
+	updateFriend = propID => {
+		this.setState({
+			isEditing: false,
+			isUpdating: true,
+			friendIdToUpdate: propID,
+			friendToUpdate: this.state.friends.find(friend => friend.id === propID)
+		});
+	};
+
+	putFriend = (propName, propAge, propEmail, propID) => {
+		const updatedFriendObject = {
+			name: propName,
+			age: propAge,
+			email: propEmail,
+		};
+		axios
+			.put(`http://localhost:5000/friends/${propID}`, updatedFriendObject)
 			.then(res =>
 				this.setState({
 					friends: res.data
@@ -110,6 +146,9 @@ export default class FriendList extends React.Component {
 						isEditing={this.state.isEditing}
 						length={this.state.length}
 						addNewFriend={this.addNewFriend}
+						isUpdating={this.state.isUpdating}
+						putFriend={this.putFriend}
+						{...this.state.friendToUpdate}
 					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
@@ -123,6 +162,7 @@ export default class FriendList extends React.Component {
 								key={friend.id}
 								{...friend}
 								deleteFriend={this.deleteFriend}
+								updateFriend={this.updateFriend}
 							/>
 						))}
 					</FriendListDiv>
