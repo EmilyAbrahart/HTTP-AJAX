@@ -89,7 +89,11 @@ export default class Friend extends React.Component {
   
   deleteFriend = () => {
     this.props.deleteFriend(this.props.id)
-  }
+	}
+	
+	updateFriend = () => {
+		this.props.updateFriend(this.props.id)
+	};
 
 	render() {
 		return (
@@ -104,7 +108,7 @@ export default class Friend extends React.Component {
 				<FriendMenu onClick={this.openMenu}>. . .</FriendMenu>
 				<ButtonContainer isMenuOpen={this.state.menuOpen}>
 					<CloseMenuButton onClick={this.closeMenu}>x</CloseMenuButton>
-					<UpdateButton>Update</UpdateButton>
+					<UpdateButton onClick={this.updateFriend} >Update</UpdateButton>
 					<RemoveButton onClick={this.deleteFriend}>Remove</RemoveButton>
 				</ButtonContainer>
 			</FriendDiv>

@@ -8,7 +8,7 @@ const FriendFormElement = styled.form`
 	background: #bb1233;
 	padding: 2rem;
 	box-sizing: border-box;
-	display: ${props => (props.isEditing ? 'flex' : 'none')};
+	display: ${props => (props.isUpdating || props.isEditing ? 'flex' : 'none')};
 `;
 const FriendFormItemContainer = styled.div`
 	${FlexFunc('row', 'center', 'center')}
@@ -40,10 +40,21 @@ const FormItem = styled.div`
 
 export default class FriendForm extends React.Component {
 	state = {
-		friendName: '',
-		friendAge: '',
-		friendEmail: ''
+		friendName: this.props.name,
+		friendAge: this.props.age,
+		friendEmail: this.props.email
 	};
+
+	componentDidUpdate() {
+		if (this.props.shouldUpdate) {
+			this.setState({
+				friendName: this.props.name,
+				friendAge: this.props.age,
+				friendEmail: this.props.email
+			});
+			this.props.componentUpdated();
+		}
+	}
 
 	nameChangeHandler = event => {
 		this.setState({
@@ -85,11 +96,23 @@ export default class FriendForm extends React.Component {
 		this.props.deleteFriend(this.props.id);
 	};
 
+	putFriend = event => {
+		event.preventDefault();
+		this.props.putFriend(
+			this.state.friendName,
+			this.state.friendAge,
+			this.state.friendEmail,
+			this.props.id
+		);
+		this.clearForm();
+	};
+
 	render() {
 		return (
 			<FriendFormElement
+				isUpdating={this.props.isUpdating}
 				isEditing={this.props.isEditing}
-				onSubmit={this.postNewFriend}
+				onSubmit={this.props.isUpdating ? this.putFriend : this.postNewFriend}
 				onReset={this.clearForm}
 			>
 				<FriendFormItemContainer>
@@ -99,22 +122,27 @@ export default class FriendForm extends React.Component {
 							type="text"
 							onChange={this.nameChangeHandler}
 							value={this.state.friendName}
+							placeholder={this.props.isUpdating ? this.props.name : 'Name'}
 						/>
 					</FormItem>
 					<FormItem>
 						Age: <br />
 						<AgeInputElement
-							type="text"
+							type="number"
 							onChange={this.ageChangeHandler}
 							value={this.state.friendAge}
+							placeholder={this.props.isUpdating ? this.props.age : 'Age'}
 						/>
 					</FormItem>
 					<FormItem>
 						Email: <br />
 						<InputElement
-							type="text"
+							type="email"
 							onChange={this.emailChangeHandler}
 							value={this.state.friendEmail}
+							placeholder={
+								this.props.isUpdating ? this.props.email : 'Email Address'
+							}
 						/>
 					</FormItem>
 				</FriendFormItemContainer>

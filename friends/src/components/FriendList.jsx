@@ -32,7 +32,13 @@ export default class FriendList extends React.Component {
 		friends: [],
 		errorMessage: '',
 		spinner: false,
-		isEditing: false
+		isEditing: false,
+		isUpdating: false,
+		friendIdToUpdate: '',
+		name: '',
+		age: '',
+		email: '',
+		shouldUpdate: false
 	};
 
 	getFriends = () => {
@@ -60,13 +66,26 @@ export default class FriendList extends React.Component {
 	}
 
 	toggleForm = () => {
-		this.setState({
-			isEditing: !this.state.isEditing
-		});
+		if (this.state.isEditing || this.state.isUpdating) {
+			this.setState({
+				name: '',
+				age: '',
+				email: '',
+				isEditing: false,
+				isUpdating: false,
+				shouldUpdate: true
+			});
+		} else {
+			this.setState({
+				isEditing: true
+			});
+		}
 	};
 
 	buttonText = () => {
-		return this.state.isEditing ? 'Close Form' : 'Add Friend';
+		return this.state.isEditing || this.state.isUpdating
+			? 'Close Form'
+			: 'Add Friend';
 	};
 
 	deleteFriend = props => {
@@ -85,8 +104,8 @@ export default class FriendList extends React.Component {
 			name: propName,
 			age: propAge,
 			email: propEmail
-    };
-    
+		};
+
 		axios
 			.post('http://localhost:5000/friends', friendObject)
 			.then(res =>
@@ -95,6 +114,41 @@ export default class FriendList extends React.Component {
 				})
 			)
 			.catch(err => console.log(err));
+	};
+
+	updateFriend = propID => {
+		this.setState({
+			isEditing: false,
+			isUpdating: true,
+			friendIdToUpdate: propID,
+			name: this.state.friends.find(friend => friend.id === propID).name,
+			age: this.state.friends.find(friend => friend.id === propID).age,
+			email: this.state.friends.find(friend => friend.id === propID).email,
+			shouldUpdate: true
+		});
+	};
+
+	putFriend = (propName, propAge, propEmail, propID) => {
+		const updatedFriendObject = {
+			name: propName,
+			age: propAge,
+			email: propEmail
+		};
+		axios
+			.put(`http://localhost:5000/friends/${propID}`, updatedFriendObject)
+			.then(res =>
+				this.setState({
+					friends: res.data,
+					isUpdating: false
+				})
+			)
+			.catch(err => console.log(err));
+	};
+
+	componentUpdated = () => {
+		this.setState({
+			shouldUpdate: false
+		});
 	};
 
 	render() {
@@ -106,9 +160,17 @@ export default class FriendList extends React.Component {
 				</AddFriendButton>
 				<FormContainerDiv>
 					<FriendForm
+						componentUpdated={this.componentUpdated}
+						shouldUpdate={this.state.shouldUpdate}
 						isEditing={this.state.isEditing}
 						length={this.state.length}
 						addNewFriend={this.addNewFriend}
+						isUpdating={this.state.isUpdating}
+						putFriend={this.putFriend}
+						name={this.state.name}
+						age={this.state.age}
+						email={this.state.email}
+						id={this.state.friendIdToUpdate}
 					/>
 				</FormContainerDiv>
 				{this.state.errorMessage && <div>{this.state.errorMessage}</div>}
@@ -122,6 +184,7 @@ export default class FriendList extends React.Component {
 								key={friend.id}
 								{...friend}
 								deleteFriend={this.deleteFriend}
+								updateFriend={this.updateFriend}
 							/>
 						))}
 					</FriendListDiv>
